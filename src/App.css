@@ -11,6 +11,7 @@ body {
   background: black;
   height: 5rem;
   padding-left: 5rem;
+  padding-right: 5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;

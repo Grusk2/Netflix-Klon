@@ -47,7 +47,6 @@ MovieCards.css
     width: 300px;
     margin: 11px;
     padding: 20px;
-    border: 1px solid #ccc;
     border-radius: 5px;
   }
   
@@ -68,6 +67,8 @@ MovieCards.css
   .slick-slide img {
     width: 80%; /* Ensure images fill the carousel slide */
     height: 80%; /* Ensure images fill the carousel slide */
-    border: 2px;
   }
   
+.rubrik {
+    padding-left: 20rem;
+}

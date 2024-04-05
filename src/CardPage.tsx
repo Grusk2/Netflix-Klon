@@ -1,9 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom"; // Import Link
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import "./CardPage.css"; // Import CSS file
+import "./CardPage.css";
 
 interface Movie {
   title: string;
@@ -21,8 +21,17 @@ interface MovieCardsProps {
 }
 
 const CardPage: React.FC<MovieCardsProps> = ({ movies }) => {
-  // Filter trending movies
-  const trendingMovies = movies.filter((movie) => movie.isTrending);
+  const [bookmarkedMovies, setBookmarkedMovies] = useState<Movie[]>([]);
+  const [trendingMovies, setTrendingMovies] = useState<Movie[]>(
+    movies.filter((movie) => movie.isTrending)
+  );
+  const [nonTrendingMovies, setNonTrendingMovies] = useState<Movie[]>(
+    movies.filter((movie) => !movie.isTrending)
+  );
+
+  const addToBookmarks = (movie: Movie) => {
+    setBookmarkedMovies([...bookmarkedMovies, movie]);
+  };
 
   const carouselSettings = {
     dots: true,
@@ -40,9 +49,47 @@ const CardPage: React.FC<MovieCardsProps> = ({ movies }) => {
       {/* Trending movies */}
       {trendingMovies.length > 0 && (
         <div className="genre-container">
-          <h2>Trending</h2>
+          <h2 className="rubrik">Trending</h2>
           <Slider {...carouselSettings}>
             {trendingMovies.map((movie, index) => (
+              <div key={index} className="movie-card">
+                <Link to={`/movie/${encodeURIComponent(movie.title)}`}>
+                  <img src={movie.thumbnail} alt={movie.title} />
+                  <h3>{movie.title}</h3>
+                </Link>
+                {/* Button to add movie to bookmarks */}
+                <button onClick={() => addToBookmarks(movie)}>+</button>
+              </div>
+            ))}
+          </Slider>
+        </div>
+      )}
+
+      {/* Non-trending movies */}
+      {nonTrendingMovies.length > 0 && (
+        <div className="genre-container">
+          <h2 className="rubrik">Recommended</h2>
+          <Slider {...carouselSettings}>
+            {nonTrendingMovies.map((movie, index) => (
+              <div key={index} className="movie-card">
+                <Link to={`/movie/${encodeURIComponent(movie.title)}`}>
+                  <img src={movie.thumbnail} alt={movie.title} />
+                  <h3>{movie.title}</h3>
+                </Link>
+                {/* Button to add movie to bookmarks */}
+                <button onClick={() => addToBookmarks(movie)}>+</button>
+              </div>
+            ))}
+          </Slider>
+        </div>
+      )}
+
+      {/* Bookmarked movies */}
+      {bookmarkedMovies.length > 0 && (
+        <div className="genre-container">
+          <h2 className="rubrik">Bookmarked</h2>
+          <Slider {...carouselSettings}>
+            {bookmarkedMovies.map((movie, index) => (
               <div key={index} className="movie-card">
                 <Link to={`/movie/${encodeURIComponent(movie.title)}`}>
                   <img src={movie.thumbnail} alt={movie.title} />
